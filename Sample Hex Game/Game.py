@@ -23,19 +23,19 @@ class Game:
     def loadData(self):
         '''load all the data (images, files, etc)'''
         game_folder = path.dirname(__file__)
-        img_folder = path.join(game_folder, 'img')
-        doc_folder = path.join(game_folder, 'docs')
+        image_folder = path.join(game_folder, 'images')
+        sound_folder = path.join(game_folder, 'sounds')
 
         #------------------IMAGES------------------
-        self.pause_img = pg.image.load(path.join(img_folder, PAUSE_IMG)).convert_alpha()
-        self.back_img = pg.image.load(path.join(img_folder, BACK_IMG)).convert_alpha()
-        self.up_img = pg.image.load(path.join(img_folder, UP_IMG)).convert_alpha()
-        self.down_img = pg.image.load(path.join(img_folder, DOWN_IMG)).convert_alpha()
+        self.pause_img = pg.image.load(path.join(image_folder, PAUSE_IMG)).convert_alpha()
+        self.back_img = pg.image.load(path.join(image_folder, BACK_IMG)).convert_alpha()
+        self.up_img = pg.image.load(path.join(image_folder, UP_IMG)).convert_alpha()
+        self.down_img = pg.image.load(path.join(image_folder, DOWN_IMG)).convert_alpha()
 
         #------------------SOUND--------------------
-        self.tick_sound = pg.mixer.Sound(path.join(doc_folder, TICK_SOUND))
+        self.tick_sound = pg.mixer.Sound(path.join(sound_folder, TICK_SOUND))
         self.tick_sound_channel = pg.mixer.Channel(1)
-        self.click_sound = pg.mixer.Sound(path.join(doc_folder, CLICK_SOUND))
+        self.click_sound = pg.mixer.Sound(path.join(sound_folder, CLICK_SOUND))
         self.click_sound_channel = pg.mixer.Channel(2)
 
     def setTileSize(self):
@@ -104,12 +104,12 @@ class Game:
         for y in range(self.size):
             if self.state[y][0] == 2:
                 if DFS(Point(y, 0), self.state, lambda v: (v.Y == self.size-1), 2):
-                    return 2
+                    return 2 #BLUE WIN
 
         for x in range(self.size):
             if self.state[0][x] == 1:
                 if DFS(Point(0, x), self.state, lambda v: (v.X == self.size-1), 1):
-                    return 1
+                    return 1 #RED WIN
         return 0
 
     def shadow(self):

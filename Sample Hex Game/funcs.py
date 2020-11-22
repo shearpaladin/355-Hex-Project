@@ -6,10 +6,10 @@ class Point:
     def __init__(self, *pos):
         if len(pos) == 1:
             self.x, self.y = pos[0]
-            #self.X, self.Y = list(map(int, pos[0]))
+            self.X, self.Y = list(map(int, pos[0]))
         else:
             self.x, self.y = pos
-            #self.X, self.Y = list(map(int, pos))
+            self.X, self.Y = list(map(int, pos))
 
     def dist(self, other):
         return hypot(self.x - other.x, self.y - other.y)
