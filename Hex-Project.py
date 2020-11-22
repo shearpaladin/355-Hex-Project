@@ -14,14 +14,17 @@ BLACK = (0,0,0)
 WHITE = (255,255,255)
 GRAY = (220,220,220)
 
-
+# Map to center
+# We can add a offset to Map our grid to the center
+offset = 150
 
 # Vertices
 #INITIAL_HEXAGON_VERTICES = ((-40,-40),(40,-40),(45,0),(40,40),(-40,40),(-45,0))
 #INITIAL_HEXAGON_VERTICES = ((-20,-20),(20,-20),(25,0),(20,20),(-20,20),(-25,0))
-INITIAL_HEXAGON_VERTICES = ((50,25),(100,0),(150,25),(150,75),(100,100),(50,75))
+#INITIAL_HEXAGON_VERTICES = ((50,25),(100,0),(150,25),(150,75),(100,100),(50,75))
+INITIAL_HEXAGON_VERTICES = ((50+offset,25+offset),(100+offset,0+offset),(150+offset,25+offset),(150+offset,75+offset),(100+offset,100+offset),(50+offset,75+offset))
 
-# Size of Grid
+# Size of Grid 3x3
 GRID_HEIGHT = 3
 GRID_WIDTH = 3
 
@@ -88,6 +91,7 @@ for column in range(GRID_WIDTH):
 windowSurface.fill(GRAY)
 
 for i in range(len(hexagon_list)):
+    # parameters of pygame.draw.polygon (surface, color, points, width)
     pygame.draw.polygon(windowSurface,BLACK,hexagon_list[i].vertices,3)
 
 pygame.display.flip()
