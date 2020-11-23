@@ -21,7 +21,7 @@ while run:
         run = game.startScreen()
     else:
         # --------------------EVENTS---------------------
-        game.highlight(pg.mouse.get_pos())
+        #game.highlight(pg.mouse.get_pos())
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 # if exit button is pressed

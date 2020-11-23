@@ -59,8 +59,9 @@ class Game:
                     self.state[r][c] = self.move
                     self.move = 3-self.move
 
+    '''
     def highlight(self, pos):
-        '''highlights the hexagon that is under the mouse'''
+        #highlights the hexagon that is under the mouse
         for r in range(self.size):
             for c in range(self.size):
                 x, y = self.coords(r, c)
@@ -68,6 +69,7 @@ class Game:
                     self.state[r][c] = self.move + 2
                 elif self.state[r][c] > 2 and not inHex(pos, x, y, self.tile_size):
                     self.state[r][c] = 0
+    '''
 
     def showGrid(self):
         '''shows hexagonal grid as well as players moves and destination sides'''
@@ -92,25 +94,17 @@ class Game:
                     drawHex(self.screen, RED, BLACK, (x, y), self.tile_size)
                 elif self.state[r][c] == 2:
                     drawHex(self.screen, BLUE, BLACK, (x, y), self.tile_size)
+                else:
+                    drawHex(self.screen, WHITE, BLACK, (x, y), self.tile_size)
+                '''
                 elif self.state[r][c] == 3:
                     drawHex(self.screen, LIGHTRED, BLACK, (x, y), self.tile_size)
                 elif self.state[r][c] == 4:
                     drawHex(self.screen, LIGHTBLUE, BLACK, (x, y), self.tile_size)
-                else:
-                    drawHex(self.screen, WHITE, BLACK, (x, y), self.tile_size)
+                '''
 
     def checkWin(self):
-        '''checks if any of the players have won'''
-        for y in range(self.size):
-            if self.state[y][0] == 2:
-                if DFS(Point(y, 0), self.state, lambda v: (v.Y == self.size-1), 2):
-                    return 2 #BLUE WIN
-
-        for x in range(self.size):
-            if self.state[0][x] == 1:
-                if DFS(Point(0, x), self.state, lambda v: (v.X == self.size-1), 1):
-                    return 1 #RED WIN
-        return 0
+        return game_status(self.state)
 
     def shadow(self):
         shadow = pg.Surface((W, H))

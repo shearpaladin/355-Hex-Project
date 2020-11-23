@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="6f7b8b11-e484-4c3a-b4bd-05f62635f3f3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Hex Bot/HexBot.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sample Hex Game/Button.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sample Hex Game/Game.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sample Hex Game/HexMain.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sample Hex Game/consts.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sample Hex Game/funcs.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sample Hex Game/images/back.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sample Hex Game/images/down-arrow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sample Hex Game/images/pause.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sample Hex Game/images/up-arrow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sample Hex Game/sounds/click.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Sample Hex Game/sounds/tick.wav" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1kfpoqfWk7uHHXPFKZzMGVbNNBz" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6f7b8b11-e484-4c3a-b4bd-05f62635f3f3" name="Default Changelist" comment="" />
+      <created>1606101677862</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1606101677862</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

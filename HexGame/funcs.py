@@ -93,6 +93,36 @@ def DFS(start, grid, exit, player):
             Q.pop()
     return False
 
+def game_status(state):
+    status = UNKNOWN
+    for y in range(SIZE):
+        if state[y][0] == 2:
+           if DFS(Point(y, 0), state, lambda v: (v.Y == SIZE-1), 2):
+                status = BLUE_WIN
+                break
+
+    if status == UNKNOWN:
+        for x in range(SIZE):
+            if state[0][x] == 1:
+                if DFS(Point(0, x), state, lambda v: (v.X == SIZE-1), 1):
+                    status = RED_WIN
+                    break
+
+    if status == UNKNOWN and len(find_empty_cells(state)) == 0:
+        status = DRAW
+
+    return status
+
+''' return the empty cells of the given state'''
+def find_empty_cells(state):
+    empty_cells = []
+
+    for r in range(SIZE):
+        for c in range(SIZE):
+            if state[r][c] == 0:
+                empty_cells.append((r, c))
+    return empty_cells
+
 def textRect(txt, size):
     font = pg.font.SysFont('Verdana', size)
     text = font.render(txt, False, BLACK)
