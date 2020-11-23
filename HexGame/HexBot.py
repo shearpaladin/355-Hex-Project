@@ -33,7 +33,6 @@ class HexBot:
     def set_root(self, state):
         self.root = Node(state)
 
-
     '''
         Find the child node that has maximum value
     '''
@@ -51,15 +50,14 @@ class HexBot:
 
         return random.choice(max_nodes)
 
-
-    def making_move(self):
+    def MCTS(self):
 
         start = clock()
-        time_limit = start + self.time_per_move
+        time_limit = start + self.time_per_move - 3
 
         '''Searching to find the winning move'''
         current_node = self.root
-        while (clock() < time_limit):
+        while clock() < time_limit:
 
             if len(current_node.children): #selection
                 current_node = self.find_max_node(current_node)
@@ -74,3 +72,33 @@ class HexBot:
 
                     # add child by its move
                     current_node.children[child.move] = child
+
+                current_node = random.choice(list(current_node.children.values()))
+
+            current_state = current_node.state
+            outcome = self.simulation(current_state)
+            self.back_propagation(current_node, outcome)
+
+    def simulation(self, state):
+        available_moves = find_empty_cells(state)
+
+        while (game_status(state) == UNKNOWN):
+            move = random(available_moves)
+            available_moves.remove(move)
+
+            state[move[0]][move[1]] = self.play_color
+
+        return game_status(state)
+
+    def back_propagation(self, node, outcome):
+        point = 0
+        if outcome == self.play_color:
+            point = 1
+        elif outcome == DRAW:
+            point = 0.5
+
+        while node != None:
+            node.num_wins += point
+            node.num_simuls += 1
+
+            node = node.parent
