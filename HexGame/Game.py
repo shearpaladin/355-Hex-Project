@@ -6,6 +6,8 @@ from consts import *
 from funcs import *
 from Button import *
 
+from HexBot import *
+
 class Game:
     def __init__(self, size):
         pg.init()
@@ -19,6 +21,9 @@ class Game:
         self.move = 1
         self.started = False
         self.sound_state = True
+
+        ### Get Bot ###
+        self.bot = HexBot(BLUE_MOVE, self.state)
 
     def loadData(self):
         '''load all the data (images, files, etc)'''
@@ -47,20 +52,30 @@ class Game:
         y = self.origin.y + (c+2*r)*self.tile_size*sqrt(3)/2
         return int(x), int(y)
 
-    def tick(self, pos):
+    def tick(self, pos1, pos2):
         '''is called if mouse pressed, changes the state of the game'''
-        for r in range(self.size):
-            for c in range(self.size):
-                x, y = self.coords(r, c)
-                if inHex(pos, x, y, self.tile_size) and self.state[r][c] != 2\
-                                                    and self.state[r][c] != 1:
-                    if self.sound_state:
-                        self.tick_sound_channel.play(self.tick_sound)
-                    self.state[r][c] = self.move
-                    self.move = 3-self.move
 
+        if pos1 is not None:
+            for r in range(self.size):
+                for c in range(self.size):
+                    x, y = self.coords(r, c)
+                    if inHex(pos1, x, y, self.tile_size) and self.state[r][c] != 2\
+                                                    and self.state[r][c] != 1:
+                        if self.sound_state:
+                            self.tick_sound_channel.play(self.tick_sound)
+                        self.state[r][c] = self.move
+                        self.move = 3-self.move
+
+        if pos2 is not None:
+            r, c = pos2
+            if self.sound_state:
+                self.tick_sound_channel.play(self.tick_sound)
+            self.state[r][c] = self.move
+            self.move = 3 - self.move
+
+    '''
     def highlight(self, pos):
-        '''highlights the hexagon that is under the mouse'''
+        #highlights the hexagon that is under the mouse
         for r in range(self.size):
             for c in range(self.size):
                 x, y = self.coords(r, c)
@@ -68,6 +83,7 @@ class Game:
                     self.state[r][c] = self.move + 2
                 elif self.state[r][c] > 2 and not inHex(pos, x, y, self.tile_size):
                     self.state[r][c] = 0
+    '''
 
     def showGrid(self):
         '''shows hexagonal grid as well as players moves and destination sides'''
@@ -92,25 +108,17 @@ class Game:
                     drawHex(self.screen, RED, BLACK, (x, y), self.tile_size)
                 elif self.state[r][c] == 2:
                     drawHex(self.screen, BLUE, BLACK, (x, y), self.tile_size)
+                else:
+                    drawHex(self.screen, WHITE, BLACK, (x, y), self.tile_size)
+                '''
                 elif self.state[r][c] == 3:
                     drawHex(self.screen, LIGHTRED, BLACK, (x, y), self.tile_size)
                 elif self.state[r][c] == 4:
                     drawHex(self.screen, LIGHTBLUE, BLACK, (x, y), self.tile_size)
-                else:
-                    drawHex(self.screen, WHITE, BLACK, (x, y), self.tile_size)
+                '''
 
     def checkWin(self):
-        '''checks if any of the players have won'''
-        for y in range(self.size):
-            if self.state[y][0] == 2:
-                if DFS(Point(y, 0), self.state, lambda v: (v.Y == self.size-1), 2):
-                    return 2 #BLUE WIN
-
-        for x in range(self.size):
-            if self.state[0][x] == 1:
-                if DFS(Point(0, x), self.state, lambda v: (v.X == self.size-1), 1):
-                    return 1 #RED WIN
-        return 0
+        return game_status(self.state)
 
     def shadow(self):
         shadow = pg.Surface((W, H))
