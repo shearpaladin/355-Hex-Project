@@ -6,6 +6,8 @@ from consts import *
 from funcs import *
 from Button import *
 
+from HexBot import *
+
 class Game:
     def __init__(self, size):
         pg.init()
@@ -19,6 +21,9 @@ class Game:
         self.move = 1
         self.started = False
         self.sound_state = True
+
+        ### Get Bot ###
+        self.bot = HexBot(BLUE_MOVE, self.state)
 
     def loadData(self):
         '''load all the data (images, files, etc)'''
@@ -47,17 +52,26 @@ class Game:
         y = self.origin.y + (c+2*r)*self.tile_size*sqrt(3)/2
         return int(x), int(y)
 
-    def tick(self, pos):
+    def tick(self, pos1, pos2):
         '''is called if mouse pressed, changes the state of the game'''
-        for r in range(self.size):
-            for c in range(self.size):
-                x, y = self.coords(r, c)
-                if inHex(pos, x, y, self.tile_size) and self.state[r][c] != 2\
+
+        if pos1 is not None:
+            for r in range(self.size):
+                for c in range(self.size):
+                    x, y = self.coords(r, c)
+                    if inHex(pos1, x, y, self.tile_size) and self.state[r][c] != 2\
                                                     and self.state[r][c] != 1:
-                    if self.sound_state:
-                        self.tick_sound_channel.play(self.tick_sound)
-                    self.state[r][c] = self.move
-                    self.move = 3-self.move
+                        if self.sound_state:
+                            self.tick_sound_channel.play(self.tick_sound)
+                        self.state[r][c] = self.move
+                        self.move = 3-self.move
+
+        if pos2 is not None:
+            r, c = pos2
+            if self.sound_state:
+                self.tick_sound_channel.play(self.tick_sound)
+            self.state[r][c] = self.move
+            self.move = 3 - self.move
 
     '''
     def highlight(self, pos):

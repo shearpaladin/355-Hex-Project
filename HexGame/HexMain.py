@@ -22,17 +22,26 @@ while run:
     else:
         # --------------------EVENTS---------------------
         #game.highlight(pg.mouse.get_pos())
+
+        if game.move == game.bot.play_color:
+            game.bot.set_root(game.state)
+            #print(game.bot.make_best_move())
+            best_move = game.bot.make_best_move()
+            game.tick(None, best_move)
+
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 # if exit button is pressed
                 run = False
             elif event.type == pg.MOUSEBUTTONDOWN:
                 # the players move
-                game.tick(pg.mouse.get_pos())
+                game.tick(pg.mouse.get_pos(), None)
+                #print(pg.mouse.get_pos())
                 if pause.triggered(channel=game.click_sound_channel,
                                    sound=game.click_sound,
                                    playing=game.sound_state):
                     run = game.pauseScreen()
+
 
         # highlight buttons
         for button in buttons:
@@ -43,6 +52,7 @@ while run:
         game.showGrid()
         for button in buttons:
             button.show(game.screen)
+
         if game.checkWin():
             run = game.GOScreen(game.checkWin())
     # double processing
