@@ -73,7 +73,7 @@ class HexBot:
             current_node, current_state, player = self.selection_expansion(player) # selection + expansion
 
             ++count
-            outcome, player = self.simulation(current_state, player)
+            outcome = self.simulation(current_state, player)[1]
             self.back_propagation(current_node, outcome)
 
     def selection_expansion(self, player):
@@ -112,6 +112,8 @@ class HexBot:
     def simulation(self, state, player):
         available_moves = find_empty_cells(state)
 
+        '''
+        // random
         while game_status(state) == UNKNOWN:
             move = random.choice(available_moves)
             available_moves.remove(move)
@@ -119,7 +121,40 @@ class HexBot:
             state, player = self.play(state, player, move)
 
         print("Game status: " + str(game_status(state)))
-        return game_status(state), player
+        '''
+
+        '''
+            apply negamax
+        '''
+        status = game_status(state)
+        max_score = NEG_INFINITY
+
+        if status != UNKNOWN:
+            return status, player
+
+        for move in available_moves:
+            new_state, new_player = self.play(state, player, move)
+            score = self.simulation(new_state, new_player)[0]
+
+            if status == 3 - self.play_color:
+                score = -1
+            elif status == DRAW:
+                score = 0
+            elif status == self.play_color:
+                score = 1
+
+            if max_score < score:
+                max_score = score
+
+            if max_score >= 1:
+                break
+
+        if max_score > 0:
+            return max_score, self.play_color
+        elif max_score == 0:
+            return max_score, DRAW
+        else:
+            return max_score, 3 - self.play_color
 
     def back_propagation(self, node, outcome):
         point = 0
@@ -138,7 +173,5 @@ class HexBot:
         self.MCTS()
         best_node = self.find_max_node(self.root)
 
-        #print ("num_wins: " + str(best_node.num_wins))
-        #print("num_simuls: " + str(best_node.num_simuls))
         print("Best Value: " + str(best_node.value))
         return best_node.move
