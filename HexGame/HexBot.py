@@ -60,7 +60,7 @@ class HexBot:
     def MCTS(self):
 
         start = clock()
-        time_limit = start + self.time_per_move - 3
+        time_limit = start + self.time_per_move
 
         '''Searching to find the winning move'''
         current_node = self.root
@@ -112,7 +112,6 @@ class HexBot:
 
 
         # random
-        '''
         while game_status(state) == UNKNOWN:
             move = random.choice(available_moves)
             available_moves.remove(move)
@@ -123,7 +122,7 @@ class HexBot:
         return None, game_status(state)
 
         #print("Game status: " + str(game_status(state)))
-        '''
+
 
         '''
             apply negamax
@@ -148,7 +147,7 @@ class HexBot:
             new_state[move[0]][move[1]] = new_player
             new_player = 3 - new_player
 
-            score = - self.simulation(new_state, new_player)[0]
+            score = self.simulation(new_state, new_player)[0]
 
             if max_score < score:
                 max_score = score

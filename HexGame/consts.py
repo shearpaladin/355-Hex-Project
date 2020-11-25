@@ -42,5 +42,5 @@ RED_WIN = 1
 BLUE_WIN = 2
 DRAW = 3
 
-TIME_PER_MOVE = 10 #the time allotted to a move
+TIME_PER_MOVE = 15 #the time allotted to a move
 NEG_INFINITY = float('-inf')
