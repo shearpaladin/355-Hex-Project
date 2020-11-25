@@ -2,6 +2,7 @@ import pygame as pg
 from math import sqrt, hypot
 from collections import deque
 
+
 class Point:
     def __init__(self, *pos):
         if len(pos) == 1:
@@ -29,46 +30,52 @@ class Point:
 
 from consts import *
 
+
 def triangleS(A, B, C):
     '''retrun the surface of a triangle'''
     a = C.dist(B)
     b = A.dist(C)
     c = A.dist(B)
-    p = (a+b+c)/2
-    return sqrt(p*(p-a)*(p-b)*(p-c))
+    p = (a + b + c) / 2
+    return sqrt(p * (p - a) * (p - b) * (p - c))
+
 
 def inHex(pos, x, y, a):
     '''checks if a point is in a hexagon'''
     P = Point(pos)
-    points = [(x+a, y), (x+a/2, y+a*sqrt(3)/2),
-              (x-a/2, y+a*sqrt(3)/2), (x-a, y),
-              (x-a/2, y-a*sqrt(3)/2), (x+a/2, y-a*sqrt(3)/2)]
+    points = [(x + a, y), (x + a / 2, y + a * sqrt(3) / 2),
+              (x - a / 2, y + a * sqrt(3) / 2), (x - a, y),
+              (x - a / 2, y - a * sqrt(3) / 2), (x + a / 2, y - a * sqrt(3) / 2)]
     points = list(map(Point, points))
     sum = 0
     for i in range(-1, 5):
-        sum += triangleS(points[i], points[i+1], P)
-    S = a*a*3*sqrt(3)/2
-    return abs(S-sum) < EPS
+        sum += triangleS(points[i], points[i + 1], P)
+    S = a * a * 3 * sqrt(3) / 2
+    return abs(S - sum) < EPS
+
 
 def inRect(pos, x, y, w, h):
     '''checks if a point is in a rectangle'''
-    return (pos.x > x and pos.x < x + w and\
-           pos.y > y and pos.y < y + h)
+    return (pos.x > x and pos.x < x + w and \
+            pos.y > y and pos.y < y + h)
+
 
 def drawHex(surface, colIn, colOut, pos, a):
     x, y = pos
-    points = [(x-a/2, y-a*sqrt(3)/2),
-              (x+a/2, y-a*sqrt(3)/2),
-              (x+a, y),
-              (x+a/2, y+a*sqrt(3)/2),
-              (x-a/2, y+a*sqrt(3)/2),
-              (x-a, y)]
+    points = [(x - a / 2, y - a * sqrt(3) / 2),
+              (x + a / 2, y - a * sqrt(3) / 2),
+              (x + a, y),
+              (x + a / 2, y + a * sqrt(3) / 2),
+              (x - a / 2, y + a * sqrt(3) / 2),
+              (x - a, y)]
     pg.draw.polygon(surface, colIn, points)
     pg.draw.polygon(surface, colOut, points, 4)
 
+
 def inBounds(v, w, h):
-    return (v.X >= 0 and v.X < h and\
+    return (v.X >= 0 and v.X < h and \
             v.Y >= 0 and v.Y < w)
+
 
 def DFS(start, grid, exit, player):
     w = len(grid[0])
@@ -84,8 +91,8 @@ def DFS(start, grid, exit, player):
         flag = False
         for m in moves:
             other = cur + m
-            if (inBounds(other, w, h) and not used[other.X][other.Y])\
-                and grid[other.X][other.Y] == player:
+            if (inBounds(other, w, h) and not used[other.X][other.Y]) \
+                    and grid[other.X][other.Y] == player:
                 Q.append(other)
                 flag = True
                 break
@@ -93,18 +100,19 @@ def DFS(start, grid, exit, player):
             Q.pop()
     return False
 
+
 def game_status(state):
     status = UNKNOWN
     for y in range(SIZE):
         if state[y][0] == 2:
-           if DFS(Point(y, 0), state, lambda v: (v.Y == SIZE-1), 2):
+            if DFS(Point(y, 0), state, lambda v: (v.Y == SIZE - 1), 2):
                 status = BLUE_WIN
                 break
 
     if status == UNKNOWN:
         for x in range(SIZE):
             if state[0][x] == 1:
-                if DFS(Point(0, x), state, lambda v: (v.X == SIZE-1), 1):
+                if DFS(Point(0, x), state, lambda v: (v.X == SIZE - 1), 1):
                     status = RED_WIN
                     break
 
@@ -113,7 +121,10 @@ def game_status(state):
 
     return status
 
+
 ''' return the empty cells of the given state'''
+
+
 def find_empty_cells(state):
     empty_cells = []
 
@@ -123,10 +134,56 @@ def find_empty_cells(state):
                 empty_cells.append((r, c))
     return empty_cells
 
+
+def find_empty_neighbor(state):
+    empty_cells = []
+
+    for r in range(SIZE):
+        for c in range(SIZE):
+            if is_empty_neighbor(state, r, c) is True:
+                #print(str(r) + "-" + str(c))
+                empty_cells.append((r, c))
+
+    return empty_cells
+
+
+def is_empty_neighbor(state, r, c):
+    if state[r][c] == 0:
+        if r == 0 or r == SIZE - 1 or c == 0 or c == SIZE - 1:
+            return True
+
+        if 0 <= r + 1 < SIZE:
+            if state[r + 1][c] == 1 or state[r + 1][c] == 2:
+                return True
+
+        if 0 <= c + 1 < SIZE:
+            if state[r][c + 1] == 1 or state[r][c + 1] == 2:
+                return True
+
+        if 0 <= r + 1 < SIZE and 0 < c - 1 < SIZE:
+            if state[r + 1][c - 1] == 1 or state[r + 1][c - 1] == 2:
+                return True
+
+        if 0 <= r - 1 < SIZE:
+            if state[r - 1][c] == 1 or state[r - 1][c] == 2:
+                return True
+
+        if 0 <= c - 1 < SIZE:
+            if state[r][c - 1] == 1 or state[r][c - 1] == 2:
+                return True
+
+        if 0 <= r - 1 < SIZE and 0 <= c + 1 < SIZE:
+            if state[r - 1][c + 1] == 1 or state[r - 1][c + 1] == 2:
+                return True
+
+    return False
+
+
 def textRect(txt, size):
     font = pg.font.SysFont('Verdana', size)
     text = font.render(txt, False, BLACK)
     return text.get_rect()
+
 
 def textOut(surface, data, size, col, pos):
     txt = str(data)
@@ -135,9 +192,10 @@ def textOut(surface, data, size, col, pos):
     rect = text.get_rect(center=pos)
     surface.blit(text, rect)
 
+
 def textOutMultiline(surface, txt, size, col, pos):
     font = pg.font.SysFont('Verdana', size)
     for y, line in enumerate(txt.split('\n')):
         text = font.render(line, False, col)
-        rect = text.get_rect(center=(pos[0], pos[1]+(y+5)*size))
+        rect = text.get_rect(center=(pos[0], pos[1] + (y + 5) * size))
         surface.blit(text, rect)
